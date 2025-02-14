@@ -7,4 +7,5 @@ urlpatterns = [
     path('api/', include('ai_helper.urls')),
     path('api/', include('notification.urls')),
     path('api/', include('activity_journal.urls')),
+    path('api/', include('users.urls')),
 ]
