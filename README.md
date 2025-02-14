@@ -14,13 +14,13 @@ ___
 
 ## Навигация:
 
-<a>Установка:</a>
-<a name="#not-auto">1.1. Ручная установка</a>
-<a name="auto">1.2. Установка через docker-compose</a>
-<a name="env">- Переменные окружения</a>
+<a>Установка:</a> <br>
+[1.1 Ручная установка](#11-ручная-установка) <br>
+[1.2 Установка через docker-compose](#12-установка-через-docker-compose) <br>
+[2 Переменные окружения](#2-наполнение-env-файла)
 
 ___
-## [1.1 Ручная установка](#not-auto)
+## 1.1 Ручная установка
 **1. Клонировать репозиторий**
 ```
 git clone https://github.com/xaxaton-3/server.git
@@ -34,22 +34,10 @@ python -m venv venv
 ```
 pip install -r requirements.txt
 ```
-[**4.Создать .env файл, содержащий секреты**](#env)
+
+**4. Создать .env файл**
 ```
-# .env файл имеет приоритет над установленными в среде переменными окружения.
-USE_LITE_DB=False  # True - запуск с SQLite, False - запуск с PostgreSQL
-EMAIL_SENDER=a@gmail.com  # почта, с которой происходит рассылка писем. Передадим данные через модератора.
-EMAIL_PASSWORD=passwordhere  # пароль от почты, с которой происходит рассылка писем. Передадим данные через модератора.
-SECRET_KEY=secretkeyhere  # секретный ключ
-DEBUG=True
-ALLOWED_HOSTS=*
-MISTRAL_TOKEN=tokenhere
-# Укажите свои данные ниже:
-POSTGRES_HOST=db
-POSTGRES_DB=fatherland_defender
-POSTGRES_USER=postgres
-POSTGRES_PASSWORD=12345
-# При USE_LITE_DB = True можно не указывать.
+Пример заполнения см. раздел 2
 ```
 
 **5. При запуске на новой базе данных**
@@ -62,18 +50,41 @@ python manage.py runserver
 ```
 
 ___
-## [1.2 Установка через docker-compose](#auto)
+## 1.2 Установка через docker-compose
 **1. Клонировать репозиторий**
 ```
 git clone https://github.com/xaxaton-3/server.git
 ```
-**2. Запуск**
+**2. Создать .env файл**
+```
+Пример заполнения см. раздел 2
+```
+**3. Поднять контейнер**
 ```
 docker-compose up --build -d && docker-compose logs -f
 ```
-**3. При необходимости отключения:**
+**3.1. При необходимости отключения:**
 ```
 docker-compose down --remove-orphans
 ```
 
-При данном способе установки также необходимо указывать <a name="env">переменные окружения</a>.
+
+___
+
+## 2 Наполнение .env файла
+```
+# .env файл имеет приоритет над установленными в среде переменными окружения.
+USE_LITE_DB=False  # True - запуск с SQLite, False - запуск с PostgreSQL
+EMAIL_SENDER=a@gmail.com  # почта, с которой происходит рассылка писем. Передадим данные через модератора.
+EMAIL_PASSWORD=passwordhere  # пароль от почты, с которой происходит рассылка писем. Передадим данные через модератора.
+SECRET_KEY=secretkeyhere
+DEBUG=True
+ALLOWED_HOSTS=*
+MISTRAL_TOKEN=tokenhere
+# Укажите свои данные ниже:
+POSTGRES_HOST=db
+POSTGRES_DB=fatherland_defender
+POSTGRES_USER=postgres
+POSTGRES_PASSWORD=12345
+# При USE_LITE_DB = True можно не указывать.
+```
