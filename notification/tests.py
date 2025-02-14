@@ -41,7 +41,7 @@ class NotificationTest(TestCase):
         notifications_count_before = Notification.objects.count()
         response = self.client.post('/api/notification/create/', data={'to_user': user.id, 'message': 'test', 'status': 1})
         self.assertEqual(response.status_code, 200)
-        self.assertIn('notification', response.data)
+        self.assertIn('id', response.data)
         notifications_count_after = Notification.objects.count()
         self.assertNotEqual(notifications_count_before, notifications_count_after)
 

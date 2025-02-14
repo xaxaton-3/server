@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'activity_journal.apps.ActivityJournalConfig',
     'ai_helper.apps.AiHelperConfig',
     'notification.apps.NotificationConfig',
     'users.apps.UsersConfig',

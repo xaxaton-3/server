@@ -26,7 +26,7 @@ class CreateNotification(APIView):
         serializer = NotificationSerializer(data=request.data)
         if serializer.is_valid():
             new_notification = serializer.save()
-            return Response({'notification': new_notification.id})
+            return Response({'id': new_notification.id})
         return Response(serializer.errors, status=status_code.HTTP_400_BAD_REQUEST)
 
     def send_email(self, email: str, message: str, status: int):

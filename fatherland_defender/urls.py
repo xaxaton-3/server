@@ -6,4 +6,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include('ai_helper.urls')),
     path('api/', include('notification.urls')),
+    path('api/', include('activity_journal.urls')),
 ]
