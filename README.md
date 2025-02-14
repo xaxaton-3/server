@@ -14,14 +14,13 @@ ___
 
 ## Навигация:
 
-<p>Установка:</p>
-<a name="not-auto">1.1. Ручная установка</a>
-
+<a>Установка:</a>
+<a name="#not-auto">1.1. Ручная установка</a>
 <a name="auto">1.2. Установка через docker-compose</a>
 <a name="env">- Переменные окружения</a>
 
 ___
-## 1.1 Ручная установка [](#not-auto)
+## [1.1 Ручная установка](#not-auto)
 **1. Клонировать репозиторий**
 ```
 git clone https://github.com/xaxaton-3/server.git
@@ -35,7 +34,7 @@ python -m venv venv
 ```
 pip install -r requirements.txt
 ```
-**4. Создать .env файл, содержащий секреты** [](#env)
+[**4.Создать .env файл, содержащий секреты**](#env)
 ```
 # .env файл имеет приоритет над установленными в среде переменными окружения.
 USE_LITE_DB=False  # True - запуск с SQLite, False - запуск с PostgreSQL
@@ -63,7 +62,7 @@ python manage.py runserver
 ```
 
 ___
-## 1.2 Установка через docker-compose [](#auto)
+## [1.2 Установка через docker-compose](#auto)
 **1. Клонировать репозиторий**
 ```
 git clone https://github.com/xaxaton-3/server.git
