@@ -1,7 +1,6 @@
-![django_test](https://github.com/xaxaton-3/server/actions/workflows/test-runner.yml/badge.svg)
+![django_test](https://github.com/xaxaton-3/server/actions/workflows/tests-runner.yml/badge.svg)
 
 # Red Hot ОГУ Peppers BACKEND
-### * ПРОЕКТ: <a href="https://osu-team.site/">https://osu-team.site/</a>
 ___
 ## Пошаговая установка и запуск проекта
 
