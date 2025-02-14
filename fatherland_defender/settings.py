@@ -6,13 +6,28 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
+
+def get_bool_from_env(name: 'str|None', default: bool) -> bool:
+    env_variable = os.environ.get(name)
+    if env_variable is None:
+        return default
+    return env_variable.lower() in {'true', '1', 'yes', 'on'}
+
+
 BASE_DIR = pathlib.Path(__file__).resolve().parent.parent
 
+USE_LITE_DB = get_bool_from_env('USE_LITE_DB', False)
+
 SECRET_KEY = os.environ.get('SECRET_KEY', 'no-so-secret')
-DEBUG = os.environ.get('DEBUG', 'true').lower() in {'true', '1', 'yes', 'on'}
+DEBUG = get_bool_from_env('DEBUG', True)
 ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', '*').split()
 MISTRAL_TOKEN = os.environ.get('MISTRAL_TOKEN')
 MAX_PERSON_HISTORY_LENGTH = 1000
+
+POSTGRES_HOST = os.environ.get('POSTGRES_HOST', default='db')
+POSTGRES_DB = os.environ.get('POSTGRES_DB', default='fatherland_defender')
+POSTGRES_USER = os.environ.get('POSTGRES_USER', default='postgres')
+POSTGRES_PASSWORD = os.environ.get('POSTGRES_PASSWORD', default='12345')
 
 INSTALLED_APPS = [
     'corsheaders',
@@ -61,11 +76,24 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'fatherland_defender.wsgi.application'
 
-DATABASES = {
-    'default': {
+SQLITE_CONFIG = {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3'
     }
+
+POSTGRES_CONFIG = {
+    'ENGINE': 'django.db.backends.postgresql',
+    'NAME': POSTGRES_DB,
+    'HOST': POSTGRES_HOST,
+    'USER': POSTGRES_USER,
+    'PASSWORD': POSTGRES_PASSWORD,
+    'PORT': '5432',
+}
+
+MAIN_DB = POSTGRES_CONFIG if not USE_LITE_DB else SQLITE_CONFIG
+
+DATABASES = {
+    'default': MAIN_DB,
 }
 
 AUTH_PASSWORD_VALIDATORS = [
