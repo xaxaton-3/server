@@ -1,7 +1,5 @@
 ![django_test](https://github.com/xaxaton-3/server/actions/workflows/tests-runner.yml/badge.svg)
 
-![django_test_coverage](https://github.com/xaxaton-3/server/actions/workflows/tests-runner.yml/coverage.svg?job=coverage)
-
 # Red Hot ОГУ Peppers BACKEND
 ___
 ## Пошаговая установка и запуск проекта
