@@ -41,10 +41,10 @@ class CreateNotification(APIView):
 
 class UserNotifications(APIView):
     def get(self, request, user_id: int):
-        not_received_notifications = Notification.objects.filter(to_user=user_id, received=False)
+        all_notifications = Notification.objects.filter(to_user=user_id)
         notifications_to_show = [
             NotificationSerializer(notif).data
-            for notif in not_received_notifications
+            for notif in all_notifications
         ]
-        not_received_notifications.update(received=True)
+        all_notifications.update(received=True)
         return Response(notifications_to_show)

@@ -8,7 +8,8 @@ class NotificationSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Notification
-        fields = ['id', 'email', 'to_user', 'message', 'status']
+        fields = ['id', 'email', 'to_user', 'message', 'status', 'received']
+        read_only = ['received']
 
     def create(self, validated_data):
         if validated_data.get('email'):
