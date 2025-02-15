@@ -31,7 +31,8 @@ class RegistrationSerializer(serializers.ModelSerializer):
 class LoginSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ['id', 'email', 'password']
+        fields = ['id', 'email', 'password', 'is_superuser']
         extra_kwargs = {
             'password': {'write_only': True},
         }
+        read_only_fields = ['is_superuser']

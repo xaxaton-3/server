@@ -27,7 +27,6 @@ def get_user_by_token(auth_header_value: str) -> 'User|None':
             value, settings.SECRET_KEY, algorithms=['HS256']
         )
     except Exception as e:
-        logger.exception(e)
         raise exceptions.AuthenticationFailed('Ошибка аутентификации. Невозможно декодировать токен.')
 
     try:
@@ -36,6 +35,7 @@ def get_user_by_token(auth_header_value: str) -> 'User|None':
         raise exceptions.AuthenticationFailed('Пользователь не найден.')
 
     if not user.is_active:
+        logger.warning(f'user is not active {user.id}')
         raise exceptions.AuthenticationFailed('Пользователь неактивен.')
 
     return (user, token)

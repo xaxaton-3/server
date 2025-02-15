@@ -52,14 +52,39 @@ class UsersTest(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertIn('token', response.data)
         self.assertIn('user', response.data)
+        self.assertEqual(response.data['user']['id'], user.id)
+        self.assertEqual(response.data['user']['email'], user.email)
+        self.assertEqual(response.data['user']['is_superuser'], user.is_superuser)
 
     def test_login_wrong_password(self):
         user = User.objects.create(email='test@mail.ru')
         user.set_password('12345678')
+        user.save()
         response = self.client.post('/api/login/', data={'email': 'test@mail.ru', 'password': '12345'})
         self.assertEqual(response.status_code, 404)
         self.assertIn('user', response.data)
         self.assertEqual(response.data['user'], -1)
+
+    def test_auth_success(self):
+        user = User.objects.create(email='test@mail.ru')
+        user.set_password('12345')
+        user.save()
+        login_response = self.client.post('/api/login/', data={'email': 'test@mail.ru', 'password': '12345'})
+        token = login_response.data['token']
+        response = self.client.get('/api/auth/', headers={'Authorization': f'Bearer {token}'})
+        self.assertEqual(response.status_code, 200)
+        self.assertIn('id', response.data)
+        self.assertIn('email', response.data)
+        self.assertIn('is_superuser', response.data)
+        self.assertEqual(response.data['id'], user.id)
+        self.assertEqual(response.data['email'], user.email)
+        self.assertEqual(response.data['is_superuser'], user.is_superuser)
+
+    def test_auth_bad(self):
+        response = self.client.get('/api/auth/', headers={'Authorization': 'Bearer really-bad-token'})
+        self.assertEqual(response.status_code, 401)
+        self.assertIn('id', response.data)
+        self.assertEqual(response.data['id'], -1)
 
 
 class InitUserCommandTest(TestCase):

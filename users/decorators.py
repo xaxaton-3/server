@@ -21,5 +21,8 @@ def check_authorization(request) -> 'User|None':
         return None
 
 def get_user_by_token(token: str) -> 'User|None':
-    user, token = user_utils.get_user_by_token(token)
+    try:
+        user, token = user_utils.get_user_by_token(token)
+    except Exception:
+        return None
     return user

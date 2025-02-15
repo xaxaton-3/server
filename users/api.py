@@ -5,6 +5,7 @@ from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.response import Response
 
+from users.decorators import with_authorization
 from users.serializers import (
     UserSerializer, UserDetailSerializer,
     RegistrationSerializer, LoginSerializer
@@ -54,3 +55,13 @@ class Login(APIView):
             return Response({'user': -1}, status=status.HTTP_404_NOT_FOUND)
         token = generate_token(user.id)
         return Response({'token': token, 'user': LoginSerializer(user).data})
+
+
+class CheckToken(APIView):
+    serializer_class = LoginSerializer
+
+    @with_authorization
+    def get(self, request):
+        if not request.user:
+            return Response({'id': -1}, status=status.HTTP_401_UNAUTHORIZED)
+        return Response(self.serializer_class(request.user).data)
