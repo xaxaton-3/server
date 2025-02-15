@@ -20,4 +20,5 @@ class AuthMiddleware:
         return None
 
     def get_user_by_token(self, token: str) -> 'User|None':
-        return user_utils.get_user_by_token(token)
+        user, token = user_utils.get_user_by_token(token)
+        return user
