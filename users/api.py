@@ -1,5 +1,6 @@
 from django.contrib.auth.models import User
 
+from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.response import Response
 
@@ -20,5 +21,5 @@ class UserDetail(APIView):
         try:
             user = User.objects.get(id=user_id)
         except User.DoesNotExist:
-            return Response({'id': -1})
+            return Response({'id': -1}, status=status.HTTP_404_NOT_FOUND)
         return Response(UserDetailSerializer(user).data)
