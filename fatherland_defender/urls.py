@@ -8,4 +8,5 @@ urlpatterns = [
     path('api/', include('notification.urls')),
     path('api/', include('activity_journal.urls')),
     path('api/', include('users.urls')),
+    path('api/', include('content.urls')),
 ]

@@ -42,5 +42,5 @@ def get_user_by_token(auth_header_value: str) -> 'User|None':
 
 
 def generate_token(user_id: int):
-    token = jwt.encode({'id': user_id}, settings.SECRET_KEY, algorithm="HS256")
+    token = jwt.encode({'id': user_id}, settings.SECRET_KEY, algorithm='HS256')
     return token
