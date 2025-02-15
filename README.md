@@ -1,4 +1,4 @@
-![django_test](https://github.com/xaxaton-3/server/actions/workflows/tests-runner.yml/badge.svg)
+![django_test](https://github.com/xaxaton-3/server/actions/workflows/tests-runner.yml/badge.svg) ![django_test_coverage](https://github.com/xaxaton-3/server/actions/workflows/tests-runner.yml/coverage.svg?job=coverage)
 
 # Red Hot ОГУ Peppers BACKEND
 ___
@@ -18,6 +18,7 @@ ___
 [1.1 Ручная установка](#11-ручная-установка) <br>
 [1.2 Установка через docker-compose](#12-установка-через-docker-compose) <br>
 [2 Переменные окружения](#2-наполнение-env-файла)
+[3 Создание тестовых пользователей](#3-создание-тестовых-пользователей)
 
 ___
 ## 1.1 Ручная установка
@@ -87,4 +88,12 @@ POSTGRES_DB=fatherland_defender
 POSTGRES_USER=postgres
 POSTGRES_PASSWORD=12345
 # При USE_LITE_DB = True можно не указывать.
+```
+
+___
+
+## 3 Создание тестовых пользователей
+Создаются пользователи: admin@mail.ru 12345 и user@mail.ru 12345.
+```
+python manage.py init_user
 ```

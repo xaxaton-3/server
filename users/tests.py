@@ -1,4 +1,5 @@
 from django.contrib.auth.models import User
+from django.core.management import call_command
 from django.test import TestCase
 
 
@@ -59,3 +60,33 @@ class UsersTest(TestCase):
         self.assertEqual(response.status_code, 404)
         self.assertIn('user', response.data)
         self.assertEqual(response.data['user'], -1)
+
+
+class InitUserCommandTest(TestCase):
+    def test_users_initialization(self):
+        users_count_before = User.objects.count()
+        call_command('init_user')
+        users_count_after = User.objects.count()
+        self.assertEqual(users_count_before + 2, users_count_after)
+
+    def test_users_initialization_admin_exists(self):
+        User.objects.create(email='admin@mail.ru')
+        users_count_before = User.objects.count()
+        call_command('init_user')
+        users_count_after = User.objects.count()
+        self.assertEqual(users_count_before + 1, users_count_after)
+
+    def test_users_initialization_user_exists(self):
+        User.objects.create(email='user@mail.ru')
+        users_count_before = User.objects.count()
+        call_command('init_user')
+        users_count_after = User.objects.count()
+        self.assertEqual(users_count_before + 1, users_count_after)
+
+    def test_users_initialization_both_exists(self):
+        User.objects.create(email='user@mail.ru', username='1')
+        User.objects.create(email='admin@mail.ru', username='2')
+        users_count_before = User.objects.count()
+        call_command('init_user')
+        users_count_after = User.objects.count()
+        self.assertEqual(users_count_before, users_count_after)
