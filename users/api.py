@@ -1,4 +1,3 @@
-from django.contrib.auth import authenticate
 from django.contrib.auth.models import User
 
 from rest_framework import status
@@ -13,6 +12,27 @@ from users.serializers import (
 from users.utils import generate_token
 
 
+"""
+@api {GET} /api/users/list/ UserList
+@apiName FatherlandDefenderAPI
+@apiGroup User
+@apiSuccess (Ответ) {Object[]} users Список активных пользователей.
+@apiSuccess (Ответ) {Number} users.id Идентификатор пользователя (-1 если не найден).
+@apiSuccess (Ответ) {String} users.email Электронная почта пользователя.
+@apiSuccess (Ответ) {Date} users.date_joined Дата регистрации аккаунта.
+@apiSuccess (Ответ) {Boolean} users.is_superuser Статус администратора.
+
+@apiSuccessExample Список пользователей (может быть пуст):
+    HTTP/1.1 200 OK
+    [
+        {
+            "id": 1,
+            "email": "red_hot_osu_pepper@mail.ru",
+            "date_joined": "2025-02-15T12:35:39.850569Z",
+            "is_superuser": true
+        }
+    ]
+"""
 class UserList(APIView):
     def get(self, request):
         users = [
@@ -22,6 +42,34 @@ class UserList(APIView):
         return Response(users)
 
 
+"""
+@api {GET} /api/users/detail/:id/ UserDetail
+@apiGroup User
+
+@apiParam {Number} id Идентификатор пользователя.
+
+@apiSuccess (Ответ) {Number} id Идентификатор пользователя.
+@apiSuccess (Ответ) {String} email Электронная почта пользователя.
+@apiSuccess (Ответ) {Date} date_joined Дата регистрации аккаунта.
+@apiSuccess (Ответ) {Boolean} is_superuser Статус администратора.
+@apiSuccess (Ответ) {Boolean} is_active Статус активности.
+
+@apiSuccessExample Пользователь существует:
+    HTTP/1.1 200 OK
+    {
+        "id": 1,
+        "email": "red_hot_osu_pepper@mail.ru",
+        "date_joined": "2025-02-15T12:35:39.850569Z",
+        "is_superuser": true,
+        "is_active": true
+    }
+
+@apiErrorExample {json} Пользователя с указанным ид не существует:
+    HTTP/1.1 404 Not Found
+    {
+        "id": -1
+    }
+"""
 class UserDetail(APIView):
     def get(self, request, user_id: int):
         try:
@@ -31,6 +79,38 @@ class UserDetail(APIView):
         return Response(UserDetailSerializer(user).data)
 
 
+"""
+@api {POST} /api/register/ Register
+@apiGroup User
+@apiBody {String} email Электронная почта пользователя.
+@apiBody {String} password Пароль.
+
+@apiSuccess (Ответ) {Number} id Идентификатор пользователя.
+@apiSuccess (Ответ) {String} email Электронная почта пользователя.
+
+@apiSuccessExample Аккаунт успешно зарегистрирован:
+    HTTP/1.1 200 OK
+    {
+        "id": 1,
+        "email": "red_hot_osu_pepper@mail.ru",
+    }
+
+@apiErrorExample {json} Пропущено поле:
+    HTTP/1.1 400 Bad Request
+    {
+        "password": [
+            "Обязательное поле."
+        ]
+    }
+
+@apiErrorExample {json} Некорректно указана почта:
+    HTTP/1.1 400 Bad Request
+    {
+        "email": [
+            "Введите правильный адрес электронной почты."
+        ]
+    }
+"""
 class Registration(APIView):
     serializer_class = RegistrationSerializer
 
@@ -41,6 +121,45 @@ class Registration(APIView):
         return Response(serializer.data)
 
 
+"""
+@api {POST} /api/login/ Login
+@apiGroup User
+@apiBody {String} email Электронная почта пользователя.
+@apiBody {String} password Пароль.
+
+@apiSuccess (Ответ) {String} token Bearer-токен для headers.
+@apiSuccess (Ответ) {Object} user Объект пользователя.
+@apiSuccess (Ответ) {Number} user.id Идентификатор пользователя.
+@apiSuccess (Ответ) {String} user.email Электронная почта пользователя.
+@apiSuccess (Ответ) {Boolean} user.is_superuser Статус администратора.
+
+@apiSuccessExample Успешный вход в аккаунт:
+    HTTP/1.1 200 OK
+    {
+        "token": "eyJhbGciOiJIUzI1NisIInr5cCI6IkpXVCJ9.eYjcSZCI6Nn0.uCO9ujoT4xLkeE9S3yG_b-k0lSNERADmGqh8YRozqYE",
+        "user": {
+            "id": 1,
+            "email": "red_hot_osu_pepper@mail.ru",
+            "is_superuser": true
+        }
+    }
+
+@apiErrorExample {json} Пропущено поле:
+    HTTP/1.1 404 Not Found
+    {
+        "password": [
+            "Обязательное поле."
+        ]
+    }
+
+@apiErrorExample {json} Некорректно указана почта:
+    HTTP/1.1 404 Not Found
+    {
+        "email": [
+            "Введите правильный адрес электронной почты."
+        ]
+    }
+"""
 class Login(APIView):
     serializer_class = LoginSerializer
 
@@ -57,6 +176,29 @@ class Login(APIView):
         return Response({'token': token, 'user': LoginSerializer(user).data})
 
 
+"""
+@api {GET} /api/auth/ CheckToken
+@apiGroup User
+@apiDescription Токен берется из headers по ключу Authorized. Формат: Bearer TokenHere
+
+@apiSuccess (Ответ) {Number} id Идентификатор пользователя (-1 при некорректном токене).
+@apiSuccess (Ответ) {String} email Электронная почта пользователя.
+@apiSuccess (Ответ) {Boolean} is_superuser Статус администратора.
+
+@apiSuccessExample Аккаунт успешно зарегистрирован:
+    HTTP/1.1 200 OK
+    {
+        "id": 1,
+        "email": "red_hot_osu_pepper@mail.ru",
+        "is_superuser": false
+    }
+
+@apiErrorExample {json} Токен не передан либо не соответствует активному пользователю:
+    HTTP/1.1 401 Unauthorized
+    {
+        "id": -1
+    }
+"""
 class CheckToken(APIView):
     serializer_class = LoginSerializer
 

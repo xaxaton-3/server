@@ -1,5 +1,3 @@
-from mock import patch
-
 from django.contrib.auth.models import User
 from django.test import TestCase
 
@@ -73,6 +71,6 @@ class RequestsCreateTest(TestCase):
         count_before = Defender.objects.count()
         response = self.client.post('/api/content/forms/create/', data={'meta': '{"number": 1}'})
         count_after = Defender.objects.count()
-        self.assertIn('id',response.data)
+        self.assertIn('id', response.data)
         self.assertEqual(response.status_code, 200)
         self.assertNotEqual(count_before, count_after)

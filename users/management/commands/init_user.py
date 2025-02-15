@@ -1,4 +1,4 @@
-from django.core.management.base import BaseCommand, CommandError
+from django.core.management.base import BaseCommand
 from django.contrib.auth.models import User
 
 
@@ -14,7 +14,7 @@ class Command(BaseCommand):
             user.set_password(password)
             user.save(update_fields=['password'])
             return user
-        
+
     def handle(self, *args, **kwargs):
         admin = self.create_user('admin@mail.ru', '12345')
         user = self.create_user('user@mail.ru', '12345')

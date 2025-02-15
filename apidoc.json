@@ -1,0 +1,9 @@
+{
+    "name": "FatherlandDefendersAPI | Red HOT OSU Peppers",
+    "version": "0.1.0",
+    "description": "Red HOT OSU Peppers backend for hackaton",
+    "apidoc": {
+      "title": "FatherlandDefendersAPI",
+      "url" : "http://127.0.0.1:8000"
+    }
+}
