@@ -167,7 +167,7 @@ class Login(APIView):
         serializer = self.serializer_class(data=request.data)
         serializer.is_valid(raise_exception=True)
         try:
-            user = User.objects.get(email=serializer.initial_data.get('email'))
+            user = User.objects.get(email=serializer.initial_data.get('email'), is_active=True)
             if not user.check_password(serializer.initial_data.get('password')):
                 raise User.DoesNotExist
         except User.DoesNotExist:
@@ -204,6 +204,6 @@ class CheckToken(APIView):
 
     @with_authorization
     def get(self, request):
-        if not request.user:
+        if not request.user or not request.user.is_active:
             return Response({'id': -1}, status=status.HTTP_401_UNAUTHORIZED)
         return Response(self.serializer_class(request.user).data)
