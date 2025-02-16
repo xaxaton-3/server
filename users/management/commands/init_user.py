@@ -22,7 +22,8 @@ class Command(BaseCommand):
             self.stdout.write(self.style.WARNING('Admin with this email already exists'))
         else:
             admin.is_superuser = True
-            admin.save(update_fields=['is_superuser'])
+            admin.is_staff = True
+            admin.save(update_fields=['is_superuser', 'is_staff'])
         if not user:
             self.stdout.write(self.style.WARNING('User with this email already exists'))
 
