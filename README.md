@@ -26,6 +26,7 @@ ___
 **1. Клонировать репозиторий**
 ```
 git clone https://github.com/xaxaton-3/server.git
+cd server
 ```
 **2. Создать и активировать виртуальное окружение**
 ```
@@ -56,6 +57,7 @@ ___
 **1. Клонировать репозиторий**
 ```
 git clone https://github.com/xaxaton-3/server.git
+cd server
 ```
 **2. Создать .env файл**
 ```
